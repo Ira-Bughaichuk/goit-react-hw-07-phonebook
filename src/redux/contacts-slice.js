@@ -16,7 +16,7 @@ export const contactsSlice = createSlice({
   },
   reducers: {
     filterContactsAction(state, { payload }) {
-      state.contacts.filter = payload;
+      state.filter = payload;
     },
   },
 
@@ -51,7 +51,7 @@ export const contactsSlice = createSlice({
       .addCase(deleteContactsThunk.fulfilled, (state, { payload }) => {
         state.contacts.isLoading = false;
         const indexElem = state.contacts.items.findIndex(
-          item => item.id === payload
+          item => item.id === payload.id
         );
         state.contacts.items.splice(indexElem, 1);
       })
@@ -62,4 +62,4 @@ export const contactsSlice = createSlice({
 });
 
 export const contactsReducer = contactsSlice.reducer;
-export const { filterContactsAction } = contactsSlice.reducer;
+export const { filterContactsAction } = contactsSlice.actions;

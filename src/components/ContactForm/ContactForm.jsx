@@ -14,7 +14,6 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const contacts = useSelector(selectContacts);
-  console.log(contacts);
   const actions = {
     name: setName,
     number: setNumber,

@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 import { deleteContactsThunk, getContactsThunk } from 'redux/contacts-thunk';
-import { selectContacts } from 'redux/contactSelector';
+import { selectFilteredContacts, selectIsLoading } from 'redux/contactSelector';
 
 function ContactList() {
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectFilteredContacts);
+
   const dispatch = useDispatch();
   const delateContact = id => dispatch(deleteContactsThunk(id));
 
