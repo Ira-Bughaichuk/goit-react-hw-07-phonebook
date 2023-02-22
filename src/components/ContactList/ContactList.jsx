@@ -1,14 +1,19 @@
 import React from 'react';
 import css from './ContactList.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
-import { delateContactsAction } from 'redux/contact/contact-slice';
-import { selectFilteredContacts } from 'redux/filter/filterSelector';
+import { deleteContactsThunk, getContactsThunk } from 'redux/contacts-thunk';
+import { selectContacts } from 'redux/contactSelector';
 
 function ContactList() {
-  const contacts = useSelector(selectFilteredContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
-  const delateContact = id => dispatch(delateContactsAction(id));
+  const delateContact = id => dispatch(deleteContactsThunk(id));
+
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
 
   const contact = contacts.map(({ name, number, id }) => (
     <li key={id} className={css.item}>

@@ -4,14 +4,17 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 import css from './ContactForm.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/contact/contactSelector';
-import { addContactsAction } from 'redux/contact/contact-slice';
+import { selectContacts } from 'redux/contactSelector';
+
+import { addContactsThunk } from 'redux/contacts-thunk';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
 
+  const contacts = useSelector(selectContacts);
+  console.log(contacts);
   const actions = {
     name: setName,
     number: setNumber,
@@ -20,11 +23,11 @@ export const ContactForm = () => {
     const { name, value } = e.target;
     actions[name](value);
   };
-  const contacts = useSelector(selectContacts);
 
   const handleSubmit = e => {
     e.preventDefault();
-    const newContact = { name, number, id: nanoid() };
+    const newContact = { name, number };
+    console.log(contacts);
     if (
       contacts.some(
         contact =>
@@ -34,11 +37,11 @@ export const ContactForm = () => {
     ) {
       return alert(`${name} already exists`);
     }
-    dispatch(addContactsAction(newContact));
+    dispatch(addContactsThunk(newContact));
     handleReset();
   };
   const handleReset = () => {
-    console.log(Object.values(actions));
+    // console.log(Object.values(actions));
     Object.values(actions).map(item => item(''));
   };
   const nameInputId = nanoid();
