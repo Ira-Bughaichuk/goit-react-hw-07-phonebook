@@ -4,6 +4,14 @@ import {
   getContactsThunk,
   deleteContactsThunk,
 } from './contacts-thunk';
+
+const handlePending = state => {
+  state.contacts.isLoading = true;
+};
+const handleRejected = state => {
+  state.contacts.isLoading = false;
+};
+
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
@@ -22,32 +30,21 @@ export const contactsSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(getContactsThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
+      .addCase(getContactsThunk.pending, handlePending)
       .addCase(getContactsThunk.fulfilled, (state, { payload }) => {
         state.contacts.isLoading = false;
         state.contacts.items = payload;
       })
-      .addCase(getContactsThunk.rejected, state => {
-        state.contacts.isLoading = false;
-      })
+      .addCase(getContactsThunk.rejected, handleRejected)
       //addContactsThunk
-      .addCase(addContactsThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
+      .addCase(addContactsThunk.pending, handlePending)
       .addCase(addContactsThunk.fulfilled, (state, { payload }) => {
-        console.log(state);
         state.contacts.isLoading = false;
         state.contacts.items.push(payload);
       })
-      .addCase(addContactsThunk.rejected, state => {
-        state.contacts.isLoading = false;
-      })
+      .addCase(addContactsThunk.rejected, handleRejected)
       //deleteContactsThunk
-      .addCase(deleteContactsThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
+      .addCase(deleteContactsThunk.pending, handlePending)
       .addCase(deleteContactsThunk.fulfilled, (state, { payload }) => {
         state.contacts.isLoading = false;
         const indexElem = state.contacts.items.findIndex(
@@ -55,9 +52,7 @@ export const contactsSlice = createSlice({
         );
         state.contacts.items.splice(indexElem, 1);
       })
-      .addCase(deleteContactsThunk.rejected, state => {
-        state.contacts.isLoading = false;
-      });
+      .addCase(deleteContactsThunk.rejected, handleRejected);
   },
 });
 
